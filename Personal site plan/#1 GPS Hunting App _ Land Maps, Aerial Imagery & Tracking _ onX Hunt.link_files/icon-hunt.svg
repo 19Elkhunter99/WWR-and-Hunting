@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="71px" height="72px" viewBox="0 0 71 72">
+  <!-- Generator: Sketch 44.1 (41455) - http://www.bohemiancoding.com/sketch -->
+  <title>icon-hunt</title>
+  <desc>Created with Sketch.</desc>
+  <defs></defs>
+  <g id="Page-Designs" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="onx-home" transform="translate(-480.000000, -10241.000000)">
+      <g id="icon-hunt" transform="translate(480.000000, 10241.000000)">
+        <g id="Page-1">
+          <g id="Group-3" fill="#FF3300">
+            <path d="M-7.55319149e-05,62.1472168 C-7.55319149e-05,62.1472168 -7.55319149e-05,71.2419537 9.06375426,71.2419537 L61.8945521,71.2419537 C61.8945521,71.2419537 70.9583819,71.2419537 70.9583819,62.1472168 L70.9583819,9.13778526 C70.9583819,9.13778526 70.9583819,0.0430484211 61.8945521,0.0430484211 L9.06375426,0.0430484211 C9.06375426,0.0430484211 -7.55319149e-05,0.0430484211 -7.55319149e-05,9.13778526 L-7.55319149e-05,62.1472168 Z" id="Fill-1"></path>
+          </g>
+          <polygon fill="#FFFFFF" points="46.748 18 35.847 28.899 24.947 18 18 24.945 28.9 35.846 18 46.747 24.947 53.693 35.847 42.793 46.748 53.693 53.693 46.747 42.794 35.846 53.693 24.945"></polygon>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
