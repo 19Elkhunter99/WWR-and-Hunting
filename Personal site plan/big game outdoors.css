@@ -151,7 +151,16 @@ nav a:hover {
   grid-area: page2;
   background-color: #ccc;
   line-height: 3em;
+
 }
+
+.big_game {
+  display: grid;
+  margin: auto;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 100%;
+}
+
 .sm-page3 {
   grid-area: page3;
   background-color: #ccc;
