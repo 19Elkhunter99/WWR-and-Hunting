@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<!-- saved from url=(0081)https://img.webmd.com/pixel/aiq.b.1.html?tid=da268d12-66e6-4850-8b58-a114b69cbe64 -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>AIQ  B  Tracking Pixel</title>
+</head>
+<body>
+	<script>
+		var url = document.location.href,
+			value = 999999,
+			matches = url.match(/[\?\&]tid=(\d+)/),
+			tidQuery = url.indexOf('='),
+			id;
+		// 
+		if (tidQuery){
+			// store the given query string value
+			id = url.substring(tidQuery + 1 ,url.length);
+		}
+        
+		// This is to setup turn cookie where only numbers present, if there are no dashes present and contains only numbers, set this
+		if (matches && matches[1] && id && !id.match('-')){
+			value = matches[1];
+			window.parent.postMessage({'wbmd': {'func': 'dropCookies','cookiename':'turn','value':value}}, document.referrer)
+		}
+		
+        // this is to setup id cookie if it matches with "dashes"  then setup the cookie directly
+		if(id && id.match('-')){
+			window.parent.postMessage({'wbmd': {'func': 'dropCookies','cookiename':'TapAd_DID','value':id}}, document.referrer)
+		}
+	</script>
+
+</body></html>

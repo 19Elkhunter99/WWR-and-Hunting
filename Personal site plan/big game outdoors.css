@@ -165,8 +165,14 @@ nav a:hover {
   grid-area: page3;
   background-color: #ccc;
   line-height: 3em;
+  
 }
 
+.cabelas {
+  display: grid;
+  margin: 0 aut0;
+  grid-template-columns: 1fr 1fr 1fr;
+}
 .top {
   grid-area: top;
   border-left: 1px solid;

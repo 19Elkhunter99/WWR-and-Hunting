@@ -1,0 +1,1 @@
+window.advBidxc.autoRefreshResponseParser({"lid":"6506946632","ref":true,"litype":"STANDARD","nt":0});

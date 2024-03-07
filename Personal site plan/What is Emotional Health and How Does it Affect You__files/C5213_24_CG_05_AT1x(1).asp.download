@@ -1,0 +1,1038 @@
+
+//<!--Copyright © 1998-2011 SurveyWriter.com-->
+ 
+//Get search string from script tag
+var searchString_sw = "vWebmd=1&itype=19&prg=[InsertProgramCode]&eaid=6504021822&ecid=138462614685&esid=3312554&epid=25311914&pt=1674&hcent=1081&scent=&leaf=&art=091e9c5e821625cc&uri=/balance/what-to-know-about-emotional-health&pvid=170982517503833910&iaf=1&pos=137&hostName=survey.o.webmd.com";
+
+//Get imgage pixel tracking bit
+var imgTrackExposed="";
+
+var nExposures_sw = [];
+var iExposed_sw = [];
+
+var TriggerLogic_sw="1==1";
+var popupDelay_sw="0";
+var popUpOdds_sw=0;
+var testType_sw=0; //Control=0 ; Exposed=1
+var popupDelayR_sw=0;
+var PIN=0;
+var tpix='';
+var adViewsTotal_sw=0;
+var deviceType_sw=1;
+var pimMode=0;
+var deviceTypeTemp_sw=0;
+var objJsonCookie_sw = "";
+var objJsonCookiePN_sw = {};
+var objJsonCookiePNvars_sw = {};
+var iContent_sw="";
+var iContentM_sticky_sw;
+var iContentD_sticky_sw;
+var iContentM_layer_sw;
+var iContentD_layer_sw;
+var iContentM_instream_sw;
+var iContentD_instream_sw;
+var adViews_sw=0;
+var wType=2;
+var passSegFlag_sw=0
+var segValue_sw="";
+var memID_sw="";
+var isPIM_sw=0;
+var noGo_sw=0;
+var expireDays_sw=180;
+var pimMax_sw=0;
+
+try {
+var visitor = parent.Visitor.getInstance("16AD4362526701720A490D45@AdobeOrg");
+	var mcvID = visitor.getMarketingCloudVisitorID();
+	var OmnitureID  = visitor.getAnalyticsVisitorID();
+		searchString_sw = searchString_sw + "&OmnitureID=" + OmnitureID;
+		searchString_sw = searchString_sw + "&mcvID=" + mcvID;
+}
+catch(err) {
+	if (window.adobeDataLayer) {
+		window.alloy("getIdentity").then(function(result) {
+			searchString_sw = searchString_sw + "&ecidID=" + result.identity.ECID;
+		});
+	}
+}
+
+var strReferrer=document.referrer;
+  strReferrer=strReferrer.replace("http://","");
+  strReferrer=strReferrer.replace("https://","");
+     var arrayReferrer=strReferrer.split("/");
+        var varReferrer=arrayReferrer[0];
+		
+var isTest_sw = query_sw('test');
+var isExit_sw = query_sw('exit');
+var itype_sw = query_sw('itype');
+var itype_sw = query_sw('itype');
+var iaf_sw = query_sw('iaf');
+var pos_sw = query_sw('pos');
+var renderType_sw=iaf_sw.toString() + pos_sw.toString();
+
+//Sets the total percentage figure. Currently set to work on a 100 scale 
+var popUpScale_sw = 100;
+
+//Cookie records Intercept Served for this project
+var cn="C5213";
+var pn="24_CG_05";
+
+
+if(window.top.jQuery == undefined){
+	var script = document.createElement('script'); 
+	window.top.document.head.appendChild(script);    
+	script.type = 'text/javascript';
+	script.src = "//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js";
+	script.onload = function(){
+	window.top.$.noConflict();
+		triggerInterceptProcess();
+	}
+}
+ else
+{
+	//window.top.jQuery.noConflict();
+	triggerInterceptProcess();
+}
+
+function triggerInterceptProcess() {
+	startInterceptProcess();
+}
+
+function startInterceptProcess() {
+
+deviceTypeTemp_sw=getDevice_sw(navigator.userAgent||navigator.vendor||window.opera);
+
+//Set PIM
+window.top.webmd.p=window.top.webmd.p || {};
+window.top.webmd.p.pim=window.top.webmd.p.pim||window.top.webmd.pim;
+if (window.top.webmd && window.top.webmd.p && window.top.webmd.p.pim) {isPIM_sw=1;}
+
+if (isPIM_sw==1) {
+  noGo_sw=0;
+  window.JSON = window.top.JSON;
+  window.webmd = window.top.webmd;
+	if (!webmd.p.pim.isAllowed()) {
+		noGo_sw=1;
+		pimMax_sw=1;
+	}
+}
+else
+   {
+     noGo_sw=1;
+   }
+
+
+//default wType desktop layer, mobile sticky
+if (deviceTypeTemp_sw==1) {wType=2};
+if (deviceTypeTemp_sw==2) {wType=2};
+if ((deviceTypeTemp_sw==2)&&(iaf_sw=="1")) {wType=1;}
+if ((deviceTypeTemp_sw==1)&&(iaf_sw=="1")) {wType=3;}
+if ((pimMax_sw==1) || (isPIM_sw==0)) {
+	noGo_sw=0;
+		wType=3;
+}
+
+
+searchString_sw = searchString_sw + "&wType=" + wType;
+
+//if (itype_sw=='1') {popUpOdds_sw = 20;TriggerLogic_sw="TrackingAdViews_sw < 1";popupDelay_sw=15;TriggerLogic_sw="adViews_sw > 1";isExit_sw=1;isExit_sw=2;popupDelayR_sw=10;pimMode=1;}
+//TriggerLogic_sw="if (adViews_sw > 1) {popupDelay_sw=0;AdViewFlag_sw=1;}else{popupDelay_sw=10;AdViewFlag_sw=1;}";}
+//Modify popup odds. A 1 means 1% of the hits, 10=10%, etc...
+//Keep the 99 itype as is
+if (itype_sw=='99') {popUpOdds_sw=0;TriggerLogic_sw="adViews_sw>0";testType_sw=1;}
+
+if (itype_sw=='1') {popUpOdds_sw=5;popupDelay_sw=10;testType_sw=0;deviceType_sw=0;TriggerLogic_sw="adViews_sw>0";pimMode=0;}
+if (itype_sw=='2') {popUpOdds_sw=5;popupDelay_sw=10;testType_sw=0;deviceType_sw=0;TriggerLogic_sw="adViews_sw>0";pimMode=0;}
+if (itype_sw=='3') {popUpOdds_sw=5;popupDelay_sw=10;testType_sw=0;deviceType_sw=0;TriggerLogic_sw="adViews_sw>0";pimMode=0;}
+if (itype_sw=='4') {popUpOdds_sw=5;popupDelay_sw=10;testType_sw=0;deviceType_sw=0;TriggerLogic_sw="adViews_sw>0";pimMode=0;}
+
+if (itype_sw=='5') {popUpOdds_sw=5;popupDelay_sw=15;testType_sw=1;deviceType_sw=0;TriggerLogic_sw="adViews_sw>1";pimMode=0;}
+if (itype_sw=='6') {popUpOdds_sw=5;popupDelay_sw=15;testType_sw=1;deviceType_sw=0;TriggerLogic_sw="adViews_sw>1";pimMode=0;}
+if (itype_sw=='7') {popUpOdds_sw=5;popupDelay_sw=15;testType_sw=1;deviceType_sw=0;TriggerLogic_sw="adViews_sw>1";pimMode=0;}
+if (itype_sw=='8') {popUpOdds_sw=5;popupDelay_sw=15;testType_sw=1;deviceType_sw=0;TriggerLogic_sw="adViews_sw>1";pimMode=0;}
+if (itype_sw=='9') {popUpOdds_sw=5;popupDelay_sw=15;testType_sw=1;deviceType_sw=0;TriggerLogic_sw="adViews_sw>1";pimMode=0;}
+if (itype_sw=='10') {popUpOdds_sw=5;popupDelay_sw=15;testType_sw=1;deviceType_sw=0;TriggerLogic_sw="adViews_sw>1";pimMode=0;}
+if (itype_sw=='11') {popUpOdds_sw=5;popupDelay_sw=15;testType_sw=1;deviceType_sw=0;TriggerLogic_sw="adViews_sw>1";pimMode=0;}
+if (itype_sw=='12') {popUpOdds_sw=5;popupDelay_sw=15;testType_sw=1;deviceType_sw=0;TriggerLogic_sw="adViews_sw>1";pimMode=0;}
+if (itype_sw=='13') {popUpOdds_sw=5;popupDelay_sw=15;testType_sw=1;deviceType_sw=0;TriggerLogic_sw="adViews_sw>1";pimMode=0;}
+if (itype_sw=='14') {popUpOdds_sw=5;popupDelay_sw=15;testType_sw=1;deviceType_sw=0;TriggerLogic_sw="adViews_sw>1";pimMode=0;}
+if (itype_sw=='15') {popUpOdds_sw=5;popupDelay_sw=15;testType_sw=1;deviceType_sw=0;TriggerLogic_sw="adViews_sw>1";pimMode=0;}
+if (itype_sw=='16') {popUpOdds_sw=5;popupDelay_sw=15;testType_sw=1;deviceType_sw=0;TriggerLogic_sw="adViews_sw>1";pimMode=0;}
+if (itype_sw=='17') {popUpOdds_sw=0;popupDelay_sw=200;testType_sw=1;deviceType_sw=0;TriggerLogic_sw="adViews_sw>199";pimMode=0;}
+if (itype_sw=='18') {popUpOdds_sw=5;popupDelay_sw=15;testType_sw=1;deviceType_sw=0;TriggerLogic_sw="adViews_sw>1";pimMode=0;}
+if (itype_sw=='19') {popUpOdds_sw=5;popupDelay_sw=15;testType_sw=1;deviceType_sw=0;TriggerLogic_sw="adViews_sw>1";pimMode=0;}
+if (itype_sw=='20') {popUpOdds_sw=5;popupDelay_sw=15;testType_sw=1;deviceType_sw=0;TriggerLogic_sw="adViews_sw>1";pimMode=0;}
+if (itype_sw=='21') {popUpOdds_sw=5;popupDelay_sw=15;testType_sw=1;deviceType_sw=0;TriggerLogic_sw="adViews_sw>1";pimMode=0;}
+if (itype_sw=='22') {popUpOdds_sw=5;popupDelay_sw=15;testType_sw=1;deviceType_sw=0;TriggerLogic_sw="adViews_sw>1";pimMode=0;}
+if (itype_sw=='23') {popUpOdds_sw=5;popupDelay_sw=15;testType_sw=1;deviceType_sw=0;TriggerLogic_sw="adViews_sw>1";pimMode=0;}
+if (itype_sw=='24') {popUpOdds_sw=5;popupDelay_sw=15;testType_sw=1;deviceType_sw=0;TriggerLogic_sw="adViews_sw>1";pimMode=0;}
+if (itype_sw=='25') {popUpOdds_sw=5;popupDelay_sw=15;testType_sw=1;deviceType_sw=0;TriggerLogic_sw="adViews_sw>1";pimMode=0;}
+
+
+
+//popUpOdds_sw=0;
+
+if ((deviceType_sw==0) || (deviceType_sw.length==0) || (deviceType_sw != deviceTypeTemp_sw)) {
+    deviceType_sw=deviceTypeTemp_sw;
+}
+
+if (isExit_sw > '0') {
+  var winType=2;
+}
+else
+{
+  var winType=1;
+}
+
+
+//Set intercept in motion
+//-----------------------
+
+if (isExit_sw > 0) {window.onunload=dounload_24_CG_05_sw;}
+
+noGo_sw=0;
+expireDays_sw=180;
+
+  expireDate_sw=getDate_sw(expireDays_sw);
+
+if (isTest_sw==2) {
+	noGo_sw=0;
+	wType=3;
+} else if (pimMode==1)  {
+	isTest_sw=1;
+	noGo_sw=0;
+}
+
+
+if ((location.href=="https://www.webmd.com/") || (window.top.location.href=="https://www.webmd.com/")) {
+       noGo_sw=1;
+   }
+   
+
+
+//Get JSON Cookie
+//Place cookie values into objJsonCookie_sw
+//setCookie_sw('jsonCookie_sw', JSON.stringify(objJsonCookie_sw), 180);
+
+var strJsonCookie_sw=getCookie_sw('jsonCookie_sw');
+
+
+if (strJsonCookie_sw==null) {strJsonCookie_sw = ' ';}
+
+try {
+	objJsonCookie_sw = JSON.parse(strJsonCookie_sw);
+	} catch (e) {
+	objJsonCookie_sw = {};
+    }
+
+
+if (objJsonCookie_sw[cn]==null) {
+  objJsonCookiePNvars_sw.e=0;
+  objJsonCookiePNvars_sw.p=0;
+  objJsonCookiePNvars_sw.x=expireDate_sw;
+    objJsonCookiePN_sw[pn]=objJsonCookiePNvars_sw;
+      objJsonCookie_sw[cn]=objJsonCookiePN_sw;
+}
+else if (objJsonCookie_sw[cn][pn]==null) {
+  objJsonCookiePNvars_sw.e=0;
+  objJsonCookiePNvars_sw.p=0;
+  objJsonCookiePNvars_sw.x=expireDate_sw;
+  objJsonCookie_sw[cn][pn]=objJsonCookiePNvars_sw;
+}
+
+//Delete cookie if expire date has been reached
+destroyCookie();
+
+
+
+//Write JSON Cookie back out immediately with testType_sw
+if (testType_sw==1) {
+   objJsonCookie_sw[cn][pn].e = testType_sw;
+      setCookie_sw('jsonCookie_sw', JSON.stringify(objJsonCookie_sw), 180);
+}
+
+
+//Write JSON Cookie back out immediately with imgTrack
+if (imgTrackExposed=="1") {
+   objJsonCookie_sw[cn][pn].e = 1;
+      setCookie_sw('jsonCookie_sw', JSON.stringify(objJsonCookie_sw), 180);
+}
+
+//Cookie records Intercept Served for this project
+    var surveyAsked_sw=objJsonCookie_sw[cn][pn].p;
+
+
+
+if (popUpOdds_sw.length==0) {popUpOdds_sw = 0;}
+
+//Set 5 second delay for control in case exposed is also on the page
+if ((testType_sw==0) && (popupDelay_sw == 0)) {popupDelay_sw=5;}
+
+
+//Cookie to read number of times page/ad viewed
+var isStrType_sw='t';
+if (testType_sw==0) {isStrType_sw='c';}
+
+  var adViewsCookieName_sw= "a" + isStrType_sw + itype_sw;
+     adViews_sw=objJsonCookie_sw[cn][pn][adViewsCookieName_sw];
+	   if (adViews_sw==null) {adViews_sw=0;}
+	     adViews_sw=parseFloat(adViews_sw) + 1;
+		   objJsonCookie_sw[cn][pn][adViewsCookieName_sw] = adViews_sw;
+
+
+//Popup Trigger Logic based on page/ad views
+//var TriggerLogic_sw = query_sw('trLogic');
+  if (TriggerLogic_sw.length==0) {TriggerLogic_sw = "1==1";}
+    var AdViewFlag_sw=0;
+      if (eval(TriggerLogic_sw)) {AdViewFlag_sw=1;}
+
+		   
+//Check for Test Type Cookie
+  var exposedCookieValue_sw=objJsonCookie_sw[cn][pn].e;
+  	if (exposedCookieValue_sw==null) {exposedCookieValue_sw=0;}
+      if (testType_sw==1) {objJsonCookie_sw[cn][pn].e = testType_sw;}
+        if ((exposedCookieValue_sw==1) && (testType_sw==0)) {noGo_sw=1;}
+
+
+//Set invite timer delay
+//var popupDelay_sw = query_sw('delayTime');
+  if (popupDelay_sw.length==0) {popupDelay_sw = 0;}
+
+
+//Set default for passSegFlag for Health Check Trigger
+
+    if (popupDelay_sw < 0) {
+         popupDelay_sw = 0;
+         passSegFlag_sw = 1;
+    }
+
+
+
+//Popup window Content
+//GFK Survey IFrame Content window
+
+iContentM_sticky_sw='\
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet" type="text/css">\
+<style>\
+.iPopFrame_sw1 {font-family: \'Source Sans Pro\', sans-serif;border: solid 1px #888888;heightx:27vh;background-color: #f3f3f3;position:fixed;bottom: 0;display:table;z-index:2147483647;}\
+#divMaster1 {width:initial;text-align:center;background-color:#fff;display:table-row;}\
+#divHeader1 {position:relative;text-align:center;padding:2% 20px 0px 20px}\
+#divCloseButton1 {cursor:pointer;text-align:right;padding-top:0px;padding-right:15px;float:left;width:12%;}\
+#CloseButton1{width:30px;}\
+#divLogo1 {margin-top:0px;float:left;width:95%;}\
+#logo1 {height:initial;}\
+#divHeader1::after {content: "";clear: both;display: table;}\
+#t1_1 {position:relative;color: #333132;font-size:13px;padding:0px 20px 0px 20px}\
+#divButton1 {position:relative;font-family:\'Source Sans Pro\', sans-serif;font-size:11px;padding:2% 20px 3% 20px;}\
+#takeSurvey1 {cursor:pointer;margin-right:1%;padding: 0px;width:44%;height:30px;background-color:#187aab;border:1px solid #187aab;color:#fff;-moz-border-radius: 5px; -webkit-border-radius: 5px;border-radius: 5px;}\
+#noSurvey1   {cursor:pointer;margin-left:1%;padding: 0px;width:44%;height:30px;background-color:#fff;border:1px solid #d4d4d4;color:#333132;-moz-border-radius: 5px; -webkit-border-radius: 5px;border-radius: 5px;}\
+#divFooter1 {position:relative;font-size:11px;paddingx:5px 9px 5px 9px;text-align:center;display:table-cell;}\
+#spanFooter1 {cursor:pointer;color: #187aab;}\
+#spanFooter1 {cursor:pointer;text-decoration:underline;}\
+</style>\
+<div id=divMaster1>\
+	<div id=divHeader1>\
+	<div id=divCloseButton1><IMG  id=CloseButton1 src="https://www.surveywriter.net/in/survey/survey140/WebMD_Mobile_CloseX.svg" onclick="javascript:iClose_sw(' + winType + ');"></div>\
+	<div id=divLogo1><img  id=logo1 src="https://www.surveywriter.net/in/survey/survey140/WebMD_Mobile_Logo_Intercept_2023.svg" ></div>\
+</div>\
+<div id=t1_1>We would like to learn about you through a short survey that should take no more than 2-3 minutes of your time.</div>\
+<div id=divButton1>\
+	<button id=takeSurvey1 onclick="javascript:window.open(&#39;https://www.surveywriter.net/in/survey/survey140/24_CG_05.asp?' + searchString_sw + '&#39;,&#39;Survey&#39;,&#39;toolbar=no,directories=no,location=no,status=yes,menubar=no,resizable=yes,scrollbars=yes,width=800,height=500,screenY=50,left=50,top=50&#39;);iClose_sw(' + winType + ');" >Take the Survey</button>\
+	<button id=noSurvey1 onclick="javascript:iClose_sw(' + winType + ');">No Thanks</button>\
+</div>\
+<div id=divFooter1>By taking this survey, you agree to WebMD\'s <A href="https://www.webmd.com/about-webmd-policies/about-privacy-policy?ss=ftr" target=_blank><span id=spanFooter2>Privacy Policy</span>.</A></div>\
+</div>\
+<img SRC="https://www.surveywriter.net/in/DM_InterceptHitsByDateBywType.asp?CN=C5213&UniqueID=19&pn=24_CG_05&wType='+wType+'&rndi=' + randomRange_sw() + '" height=1 width=1>';
+
+iContentD_sticky_sw='\
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet" type="text/css">\
+<style>\
+.iPopFrame_sw1 {font-family: Roboto, sans-serif;border: solid 1px #888888;height:100px;position:fixed;bottom: 0;z-index:2147483647;}\
+#divMaster1 {width:initial;text-align:center;background-color:#fff;  display: grid;grid-template-rows:57px 43px;grid-template-columns: 15% 45% 38% 2%;padding-top:15px;z-index:2147483647;}\
+#divHeader1 {position:relative;text-align:center;padding:5% 20px 0px 20px}\
+#divCloseButton1 {cursor:pointer;text-align:right;padding-top:15px;padding-right:15px;}\
+#CloseButton1{width:30px;}\
+#divLogo1 {margin-top:15px;}\
+#logo1 {height:initial;}\
+#divHeader1::after {content: "";clear: both;display: table;}\
+#t1_1 {color: #333132;font-size:16px;}\
+#divButton1 {font-family:\'Source Sans Pro\', sans-serif;font-size:15px;position:relative;padding-left:4%;}\
+#takeSurvey1 {cursor:pointer;;margin: 0 1% 0 2%;width:45%;height:32px;background-color:#187aab;border:1px solid #187aab;color:#fff;-moz-border-radius: 5px; -webkit-border-radius: 5px;border-radius: 5px;float:left;padding:0px;}\
+#noSurvey1   {cursor:pointer;margin: 0 2% 0 1%;width:45%;height:32px;background-color:#fff;border:1px solid #d4d4d4;color:#333132;-moz-border-radius: 5px; -webkit-border-radius: 5px;border-radius: 5px;float:left;padding:0px;}\
+#divFooter1 {background-color: #f3f3f3;font-size:8px;text-align:center;grid-row-start: 2;grid-column-start: 1;grid-column-end: 4;padding-top:7px;}\
+#spanFooter1 {cursor:pointer;color: #187aab;}\
+#spanFooter1 {cursor:pointer;text-decoration:underline;}\
+</style>\
+<div id=divMaster1>\
+	<div id=divLogo1><img  id=logo1 src="https://www.surveywriter.net/in/survey/survey140/WebMDLogo_intercept.svg" ></div>\
+	<div id=t1_1>We would like to learn about you through a short survey that should take no more than 2-3 minutes of your time.</div>\
+	<div id=divButton1>\
+		<button id=takeSurvey1 onclick="javascript:window.open(&#39;https://www.surveywriter.net/in/survey/survey140/24_CG_05.asp?' + searchString_sw + '&#39;,&#39;Survey&#39;,&#39;toolbar=no,directories=no,location=no,status=yes,menubar=no,resizable=yes,scrollbars=yes,width=800,height=500,screenY=50,left=50,top=50&#39;);iClose_sw(' + winType + ');" >Take the Survey</button>\
+		<button id=noSurvey1 onclick="javascript:iClose_sw(' + winType + ');">No Thanks</button>\
+	</div>\
+	<div id=divCloseButton1><IMG  id=CloseButton1 src="https://www.surveywriter.net/in/survey/survey140/CloseButtonX_intercept.svg" onclick="javascript:iClose_sw(' + winType + ');"></div>\
+<div id=divFooter1>This survey is being conducted by the WebMD Marketing Research department. All information will be used in a manner consistent with the WebMD <A href="https://www.webmd.com/about-webmd-policies/about-privacy-policy?ss=ftr" target=_blank><span id=spanFooter1>privacy policy</span>.</A></div>\
+</div>\
+<img SRC="https://www.surveywriter.net/in/DM_InterceptHitsByDateBywType.asp?CN=C5213&UniqueID=19&pn=24_CG_05&wType='+wType+'&rndi=' + randomRange_sw() + '" height=1 width=1>';
+
+
+iContentM_layer_sw='\
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet" type="text/css">\
+<style>\
+:root { --element-height: 33vh; }\
+.iPopFrame_sw2  {position:fixed;top:50%;left:50%;transform:translate(-50%, -50%); overflow: auto;}\
+.iPopFrame_sw2  {font-family: \'Source Sans Pro\', sans-serif;border: solid 1px #888888;display:table;z-index:2147483647;}\
+.iPopFrame_sw2  {  height: var(--element-height); width: 90%;}\
+.iPopFrame_sw2 {background: url("https://www.surveywriter.net/in/survey/survey140/C5213_Mobile_Intercept_Background_2023_v2.svg");}\
+.iPopFrame_sw2  {background-repeat: no-repeat;background-size: cover;}\
+#divMaster2 {width:initial;text-align:center;display:table-row;}\
+#divHeader2 {position:relative;text-align:center;}\
+#divCloseButton2 {cursor:pointer;text-align:right;padding-top:15px;padding-right:15px;}\
+#CloseButton2{width:30px;}\
+#divLogo2 {margin-top:15px;}\
+#logo2 {height:initial;}\
+#divHeader2::after {content: "";clear: both;display: table;}\
+#t1_2 {position:relative;color: #333132;font-size:16px;font-weight:400;padding:0px 20px 0px 20px;margin-left: 35px;margin-right: 45px;margin-top:20px;}\
+#divButton2 {position:relative;font-family:\'Source Sans Pro\', sans-serif;font-size:16px;padding:0px 0px 0px 0px;margin-top:30px;}\
+#takeSurvey2 {cursor:pointer;margin-right:1%;padding: 0px;width:36%;height:40px;background-color:#3557FF;border:1px solid #3557FF;color:#FFFFFF;border-radius: 4px;font: inherit;}\
+#noSurvey2   {cursor:pointer;margin-left:1%;padding: 0px;width:36%;height:40px;background-color:#FFFFFF;border:1px solid #3557FF;color:#3557FF;border-radius: 4px;font: inherit;}\
+#divFooter2 {position:relative;font-size:12px;text-align:center;color: #333132;margin-top:22px;padding:12px 29px 12px 29px;margin-left:40px;margin-right:40px;margin-bottom:5px;}\
+#spanFooter2 {cursor:pointer;color: #3557FF;}\
+</style>\
+<div id=divMaster2>\
+	<div id=divHeader2>\
+	<div id=divCloseButton2><IMG  id=CloseButton2 src="https://www.surveywriter.net/in/survey/survey140/WebMD_Mobile_CloseX.svg" onclick="javascript:iClose_sw(' + winType + ');"></div>\
+	<div id=divLogo2><img  id=logo2 src="https://www.surveywriter.net/in/survey/survey140/WebMD_Mobile_Logo_Intercept_2023.svg" ></div>\
+</div>\
+<div id=t1_2>We would like to learn about you through a short survey that should take no more than 2-3 minutes of your time.</div>\
+<div id=divButton2>\
+	<button id=takeSurvey2 onclick="javascript:window.open(&#39;https://www.surveywriter.net/in/survey/survey140/24_CG_05.asp?' + searchString_sw + '&#39;,&#39;Survey&#39;,&#39;toolbar=no,directories=no,location=no,status=yes,menubar=no,resizable=yes,scrollbars=yes,width=800,height=500,screenY=50,left=50,top=50&#39;);iClose_sw(' + winType + ');" >Take the Survey</button>\
+	<button id=noSurvey2 onclick="javascript:iClose_sw(' + winType + ');">No Thanks</button>\
+</div>\
+<div id=divFooter2>By taking this survey, you agree to WebMD\'s <A href="https://www.webmd.com/about-webmd-policies/about-privacy-policy?ss=ftr" target=_blank><span id=spanFooter2>Privacy Policy</span>.</A></div>\
+</div>\
+<img SRC="https://www.surveywriter.net/in/DM_InterceptHitsByDateBywType.asp?CN=C5213&UniqueID=19&pn=24_CG_05&wType='+wType+'&rndi=' + randomRange_sw() + '" height=1 width=1>';
+
+iContentD_layer_sw='\
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet" type="text/css">\
+<style>\
+.iPopFrame_sw2  {position:fixed;top:50%;left:50%;transform:translate(-50%, -50%); overflow: auto;}\
+.iPopFrame_sw2  {font-family: \'Source Sans Pro\', sans-serif;border: solid 1px #888888;display:table;z-index:2147483647;}\
+.iPopFrame_sw2  {  height: auto;}\
+.iPopFrame_sw2 {background: url("https://www.surveywriter.net/in/survey/survey140/C5213_Intercept_Background_2023_v6.svg");}\
+.iPopFrame_sw2  {background-repeat: no-repeat;background-size: cover;}\
+#divMaster2 {width:initial;text-align:center;display:table-row;}\
+#divHeader2 {position:relative;text-align:center;}\
+#divCloseButton2 {cursor:pointer;text-align:right;padding-top:10px;padding-right:10px;}\
+#CloseButton2{}\
+#divLogo2 {margin-top:20px;padding-left:25%;padding-right:25%;width:auto;}\
+#logo2 {width:100%;}\
+#divHeader2::after {content: "";clear: both;display: table;}\
+#t1_2 {position:relative;color: #333132;font-size:18px;font-weight:400;padding:0px 0px 0px 0px;padding-left: 65px;padding-right: 65px;padding-top:25px;}\
+#divButton2 {position:relative;font-family:\'Source Sans Pro\', sans-serif;font-size:18px;padding:0px 0px 0px 0px;margin-top:40px;width:100%;}\
+#takeSurvey2 {cursor:pointer;margin-right:1%;padding: 0px;width:40%;height:40px;background-color:#3557FF;border:1px solid #3557FF;color:#FFFFFF;border-radius: 4px;font: inherit;}\
+#noSurvey2   {cursor:pointer;margin-left:1%;padding: 0px;width:40%;height:40px;background-color:#FFFFFF;border:1px solid #3557FF;color:#3557FF;border-radius: 4px;font: inherit;}\
+#divFooter2 {position:relative;font-size:12px;text-align:center;color: #333132;margin-top:35px;padding-bottom:10px;}\
+#spanFooter2 {cursor:pointer;color: #3557FF;}\
+</style>\
+<div id=divMaster2>\
+	<div id=divHeader2>\
+	<div id=divCloseButton2><IMG  id=CloseButton2 src="https://www.surveywriter.net/in/survey/survey140/WebMD_CloseX.svg" onclick="javascript:iClose_sw(' + winType + ');"></div>\
+	<div id=divLogo2><img  id=logo2 src="https://www.surveywriter.net/in/survey/survey140/WebMD_Logo_Intercept_2023.svg" ></div>\
+</div>\
+<div id=t1_2>We would like to learn about you through a short survey that should take no more than 2-3 minutes of your time.</div>\
+<div id=divButton2>\
+	<button id=takeSurvey2 onclick="javascript:window.open(&#39;https://www.surveywriter.net/in/survey/survey140/24_CG_05.asp?' + searchString_sw + '&#39;,&#39;Survey&#39;,&#39;toolbar=no,directories=no,location=no,status=yes,menubar=no,resizable=yes,scrollbars=yes,width=800,height=500,screenY=50,left=50,top=50&#39;);iClose_sw(' + winType + ');" >Take the Survey</button>\
+	<button id=noSurvey2 onclick="javascript:iClose_sw(' + winType + ');">No Thanks</button>\
+</div>\
+<div id=divFooter2>By taking this survey, you agree to WebMD\'s <A href="https://www.webmd.com/about-webmd-policies/about-privacy-policy?ss=ftr" target=_blank><span id=spanFooter2>Privacy Policy</span>.</A></div>\
+</div>\
+<img SRC="https://www.surveywriter.net/in/DM_InterceptHitsByDateBywType.asp?CN=C5213&UniqueID=19&pn=24_CG_05&wType='+wType+'&rndi=' + randomRange_sw() + '" height=1 width=1>';
+
+iContentM_instream_sw='\
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet" type="text/css">\
+<style>\
+:root { --element-height: 33vh; }\
+.iPopFrame_sw3  {font-family: \'Source Sans Pro\', sans-serif;border: solid 1px #888888;display:table;z-index:2147483647;}\
+.iPopFrame_sw3  {  height: var(--element-height); width: 90%;}\
+.iPopFrame_sw3 {background: url("https://www.surveywriter.net/in/survey/survey140/C5213_Mobile_Intercept_Background_2023.svg");}\
+.iPopFrame_sw3  {background-repeat: no-repeat;background-size: cover;}\
+.iPopFrame_sw3 {display:table;z-index:2147483647;margin:auto;margin-bottom: 3vh;}\
+#divMaster3 {width:initial;text-align:center;display:table-row;}\
+#divHeader3 {position:relative;text-align:center;}\
+#divCloseButton3 {cursor:pointer;text-align:right;padding-top:15px;padding-right:15px;}\
+#CloseButton3{width:30px;}\
+#divLogo3 {margin-top:15px;}\
+#logo3 {height:initial;}\
+#divHeader3::after {content: "";clear: both;display: table;}\
+#t1_3 {position:relative;color: #333132;font-size:16px;font-weight:400;padding:0px 20px 0px 20px;margin-left: 35px;margin-right: 45px;margin-top:20px;}\
+#divButton3 {position:relative;font-family:\'Source Sans Pro\', sans-serif;font-size:16px;padding:0px 0px 0px 0px;margin-top:30px;}\
+#takeSurvey3 {cursor:pointer;margin-right:1%;padding: 0px;width:36%;height:40px;background-color:#3557FF;border:1px solid #3557FF;color:#FFFFFF;border-radius: 4px;font: inherit;}\
+#noSurvey3   {cursor:pointer;margin-left:1%;padding: 0px;width:36%;height:40px;background-color:#FFFFFF;border:1px solid #3557FF;color:#3557FF;border-radius: 4px;font: inherit;}\
+#divFooter3 {position:relative;font-size:12px;text-align:center;color: #333132;margin-top:22px;padding:12px 29px 12px 29px;margin-left:40px;margin-right:40px;margin-bottom:5px;}\
+#spanFooter3 {cursor:pointer;color: #3557FF;}\
+</style>\
+<div id=divMaster3>\
+	<div id=divHeader3>\
+	<div id=divCloseButton3><IMG  id=CloseButton3 src="https://www.surveywriter.net/in/survey/survey140/WebMD_Mobile_CloseX.svg" onclick="javascript:iClose_sw(' + winType + ');"></div>\
+	<div id=divLogo3><img  id=logo3 src="https://www.surveywriter.net/in/survey/survey140/WebMD_Mobile_Logo_Intercept_2023.svg" ></div>\
+</div>\
+<div id=t1_3>We would like to learn about you through a short survey that should take no more than 2-3 minutes of your time.</div>\
+<div id=divButton3>\
+	<button id=takeSurvey3 onclick="javascript:window.open(&#39;https://www.surveywriter.net/in/survey/survey140/24_CG_05.asp?' + searchString_sw + '&#39;,&#39;Survey&#39;,&#39;toolbar=no,directories=no,location=no,status=yes,menubar=no,resizable=yes,scrollbars=yes,width=800,height=500,screenY=50,left=50,top=50&#39;);iClose_sw(' + winType + ');" >Take the Survey</button>\
+	<button id=noSurvey3 onclick="javascript:iClose_sw(' + winType + ');">No Thanks</button>\
+</div>\
+<div id=divFooter3>By taking this survey, you agree to WebMD\'s <A href="https://www.webmd.com/about-webmd-policies/about-privacy-policy?ss=ftr" target=_blank><span id=spanFooter3>Privacy Policy</span>.</A></div>\
+</div>\
+<img SRC="https://www.surveywriter.net/in/DM_InterceptHitsByDateBywType.asp?CN=C5213&UniqueID=19&pn=24_CG_05&wType='+wType+'&rndi=' + randomRange_sw() + '" height=1 width=1>';
+
+iContentD_instream_sw='\
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet" type="text/css">\
+<style>\
+.iPopFrame_sw3 {displayx:table;height:23vh;z-index:2147483647;margin: 0 auto;widthx:65%;margin-bottom:15px;}\
+.iPopFrame_sw3  {font-family: \'Source Sans Pro\', sans-serif;border: solid 1px #888888;display:table;}\
+.iPopFrame_sw3 {background: url("https://www.surveywriter.net/in/survey/survey140/C5213_Intercept_Background_2023_v4.svg");}\
+.iPopFrame_sw3  {background-repeat: no-repeat;background-size: cover;}\
+#divMaster3 {width:initial;text-align:center;display:table-row;}\
+#divHeader3 {position:relative;text-align:center;}\
+#divCloseButton3 {cursor:pointer;text-align:right;padding-top:10px;padding-right:10px;}\
+#CloseButton3{}\
+#divLogo3 {margin-top:20px;padding-left:25%;padding-right:25%;width:auto;}\
+#logo3 {width:100%;}\
+#divHeader3::after {content: "";clear: both;display: table;}\
+#t1_3 {position:relative;color: #333132;font-size:18px;font-weight:400;padding:0px 0px 0px 0px;padding-left: 65px;padding-right: 65px;padding-top:25px;}\
+#divButton3 {position:relative;font-family:\'Source Sans Pro\', sans-serif;font-size:18px;padding:0px 0px 0px 0px;margin-top:40px;width:100%;}\
+#takeSurvey3 {cursor:pointer;margin-right:1%;padding: 0px;width:40%;height:40px;background-color:#3557FF;border:1px solid #3557FF;color:#FFFFFF;border-radius: 4px;font: inherit;}\
+#noSurvey3   {cursor:pointer;margin-left:1%;padding: 0px;width:40%;height:40px;background-color:#FFFFFF;border:1px solid #3557FF;color:#3557FF;border-radius: 4px;font: inherit;}\
+#divFooter3 {position:relative;font-size:12px;text-align:center;color: #333132;margin-top:35px;padding-bottom:10px;}\
+#spanFooter3 {cursor:pointer;color: #3557FF;}\
+</style>\
+<div id=divMaster3>\
+	<div id=divHeader3>\
+	<div id=divCloseButton3><IMG  id=CloseButton3 src="https://www.surveywriter.net/in/survey/survey140/WebMD_CloseX.svg" onclick="javascript:iClose_sw(' + winType + ');"></div>\
+	<div id=divLogo3><img  id=logo3 src="https://www.surveywriter.net/in/survey/survey140/WebMD_Logo_Intercept_2023.svg" ></div>\
+</div>\
+<div id=t1_3>We would like to learn about you through a short survey that should take no more than 2-3 minutes of your time.</div>\
+<div id=divButton3>\
+	<button id=takeSurvey3 onclick="javascript:window.open(&#39;https://www.surveywriter.net/in/survey/survey140/24_CG_05.asp?' + searchString_sw + '&#39;,&#39;Survey&#39;,&#39;toolbar=no,directories=no,location=no,status=yes,menubar=no,resizable=yes,scrollbars=yes,width=800,height=500,screenY=50,left=50,top=50&#39;);iClose_sw(' + winType + ');" >Take the Survey</button>\
+	<button id=noSurvey3 onclick="javascript:iClose_sw(' + winType + ');">No Thanks</button>\
+</div>\
+<div id=divFooter3>By taking this survey, you agree to WebMD\'s <A href="https://www.webmd.com/about-webmd-policies/about-privacy-policy?ss=ftr" target=_blank><span id=spanFooter3>Privacy Policy</span>.</A></div>\
+</div>\
+<img SRC="https://www.surveywriter.net/in/DM_InterceptHitsByDateBywType.asp?CN=C5213&UniqueID=19&pn=24_CG_05&wType='+wType+'&rndi=' + randomRange_sw() + '" height=1 width=1>';
+
+
+
+
+if (wType==1) {
+	if (deviceType_sw==2) {
+	iContent_sw=iContentM_sticky_sw;
+	}
+	else
+	{
+	iContent_sw=iContentD_sticky_sw;
+	}
+}
+
+if (wType==2) {
+	if (deviceType_sw==2) {
+	iContent_sw=iContentM_layer_sw;
+	}
+	else
+	{
+	iContent_sw=iContentD_layer_sw;
+	}
+}
+
+if (wType==3) {
+	if (deviceType_sw==2) {
+	iContent_sw=iContentM_instream_sw;
+	}
+	else
+	{
+	iContent_sw=iContentD_instream_sw;
+	}
+}
+
+
+if ((isExit_sw != 1) && (noGo_sw==0)) {
+
+  //Check to see if Popup window should trigger
+    checkTriggerPopup_24_CG_05(AdViewFlag_sw,popUpOdds_sw,surveyAsked_sw,popupDelay_sw,iContent_sw);
+
+  //Write JSON Cookie back out
+    setCookie_sw('jsonCookie_sw', JSON.stringify(objJsonCookie_sw), 180);
+
+}
+
+}
+
+
+//Being Function Calls
+//--------------------
+
+
+ function checkTriggerPopup_24_CG_05(AdViewFlag_sw,popUpOdds_sw,surveyAsked_sw,popupDelay_sw,iContent_sw) {
+ 
+ if (isTest_sw==2) {noGo_sw=0;surveyAsked_sw=0;popupDelay_sw=2;popUpOdds_sw=100;AdViewFlag_sw=1;}
+ 
+ if (noGo_sw==0) {
+  if (AdViewFlag_sw==1) {
+    var randomN_sw=randomRange_sw();
+    if (randomN_sw <= popUpOdds_sw) {
+
+	    if (surveyAsked_sw==0) {
+            if (popupDelay_sw > 0) {
+                 setTimeout("showPopup_sw(iContent_sw)",parseFloat(popupDelay_sw) * 1000);
+                }
+			else if (passSegFlag_sw==1) 
+			    {
+				  //showPopup_sw(iContent_sw);
+				}
+			else if (isExit_sw > 0) 
+			    {dounload_24_CG_05_sw();}
+            else
+                {
+				showPopup_sw(iContent_sw);
+               }
+        }
+    }
+  }
+ }
+}
+
+
+
+
+function showPopup_sw(iContent_sw) {   
+
+
+if (wType==1) {
+	if (deviceType_sw==2) {
+	iContent_sw=iContentM_sticky_sw;
+	}
+	else
+	{
+	iContent_sw=iContentD_sticky_sw;
+	}
+}
+
+if (wType==2) {
+	if (deviceType_sw==2) {
+	iContent_sw=iContentM_layer_sw;
+	}
+	else
+	{
+	iContent_sw=iContentD_layer_sw;
+	}
+}
+
+if (wType==3) {
+	if (deviceType_sw==2) {
+	iContent_sw=iContentM_instream_sw;
+	}
+	else
+	{
+	iContent_sw=iContentD_instream_sw;
+	}
+}
+
+//Check to see if exposure has happened since intercept was triggered
+//-------------------------------------------------------------------
+var strJsonCookieTemp_sw=getCookie_sw('jsonCookie_sw');
+  var objJsonCookieTemp_sw = JSON.parse(strJsonCookieTemp_sw);
+    var exposedCookieValueTemp_sw=objJsonCookieTemp_sw[cn][pn].e;	
+			if ((exposedCookieValueTemp_sw==1) && (testType_sw==0)) {noGo_sw=1;}
+				if (window.top.jQuery("[id^='iPopFrame']").length>0) {noGo_sw=1;}
+ if (noGo_sw==1) {return false;}
+
+   if (testType_sw==0) {
+     adViewsTotal_sw=0;
+   }
+   else
+   {		   
+     adViewsTotal_sw=getAdViewsTotal_sw(objJsonCookie_sw[cn][pn])
+   }
+    iContent_sw=iContent_sw.replace("&itype=","&adViewsTotal_sw=" + adViewsTotal_sw + "&adViews_sw=" + adViews_sw + "&itype=")
+    iContent_sw=iContent_sw.replace("&itype=","&ivar=iExposed~" + iExposed_sw + "~2&itype=")
+
+	var iDiv = window.top.document.createElement('DIV');
+	var iPopFrameCnt=document.getElementsByClassName("iPopFrame_sw").length;
+		iDiv.id="iPopFrame_sw" + wType;
+		iDiv.className="iPopFrame_sw" + wType;
+		iDiv.setAttribute("name","iPopFrame_sw");
+		iDiv.style.visibility="hidden";
+
+
+		//window.top.document.getElementById('main-container').appendChild(iDiv);
+		if (wType==3) {
+			var masterDiv_sw = window.top.document.createElement('DIV');
+			masterDiv_sw.id="masterDiv_sw";
+			if (deviceType_sw==2) {
+				window.top.jQuery("[id^='infinite-ad-']").after(masterDiv_sw);
+				window.top.document.getElementById('masterDiv_sw').append(iDiv);
+				}else{
+				window.top.jQuery("[id^='ad-centerwell-pos-']").after(masterDiv_sw);
+				window.top.document.getElementById('masterDiv_sw').append(iDiv);
+				}
+		}else{
+			var masterDiv_sw = window.top.document.createElement('DIV');
+			masterDiv_sw.id="masterDiv_sw";
+			window.top.document.getElementsByTagName('body')[0].appendChild(masterDiv_sw);
+			window.top.document.getElementById('masterDiv_sw').append(iDiv);
+		}
+			window.top.document.getElementById(iDiv.id).innerHTML=iContent_sw;
+			window.top.document.getElementById(iDiv.id).style.visibility="visible";
+			if (wType==2) {
+				var divBGMask = window.top.document.createElement('DIV');
+				divBGMask.id="divBGMask";
+				window.top.document.getElementsByTagName('body')[0].append(divBGMask);
+				window.top.document.getElementById("divBGMask").style.cssText="left:0px;top:0px;width:100%;height:100%;position:fixed;z-index:2147483646;";
+				window.top.document.getElementById("divBGMask").style.backgroundColor="rgba(51, 49, 50, 0.5)";
+			}
+
+				var script= document.createElement('script');
+					script.type= 'text/javascript';
+						script.src= 'https://www.surveywriter.net/in/survey/survey140/iCloseIntercept.js';
+							window.top.document.getElementById(iDiv.id).appendChild(script);
+				if (passSegFlag_sw==1) {iDiv.style.visibility="hidden";}
+
+if (deviceType_sw==1) {
+	var width=$("#iPopFrame_sw2").height()*1.40+"px";
+		$("#iPopFrame_sw2").css("width",width);
+}
+
+		 if ((isPIM_sw==1) && (passSegFlag_sw != 1)) {
+ 		   webmd.p.pim.increment();
+         }
+			   objJsonCookie_sw[cn][pn].p = 1;
+
+               //Write JSON Cookie back out
+                  setCookie_sw('jsonCookie_sw', JSON.stringify(objJsonCookie_sw), 180);
+}
+
+
+
+//Cookie Functions
+//----------------
+
+function setCookie_sw_Old(name, value, expiresDays, path, domain, secure) {
+path="/";
+var CurrentDomain=document.domain;
+
+var now = new Date();
+ fixDate_sw(now);
+   now.setTime(now.getTime() + expiresDays * 24 * 60 * 60 * 1000);
+     expires=now;
+
+
+if (CurrentDomain.indexOf(".") > -1) {
+   var arCurrentDomain=CurrentDomain.split(".");
+     domain=arCurrentDomain[arCurrentDomain.length-2] + "." + arCurrentDomain[arCurrentDomain.length-1];
+   }
+else
+   {
+   domain="";
+   }
+
+
+  var curCookie = name + "=" + escape(value) +
+      ((expires) ? "; expires=" + expires.toGMTString() : "") +
+      ((path) ? "; path=" + path : "") +
+      ((domain) ? "; domain=" + domain : "") +
+      ((secure) ? "; secure" : "");
+  document.cookie = curCookie;
+}
+
+
+function setCookie_sw(name, value, expiresDays, path, domain, secure) {
+path="/";
+var CurrentDomain=document.domain;
+
+var now = new Date();
+ fixDate_sw(now);
+   now.setTime(now.getTime() + expiresDays * 24 * 60 * 60 * 1000);
+     expires=now;
+
+
+if (CurrentDomain.indexOf(".") > -1) {
+   var arCurrentDomain=CurrentDomain.split(".");
+     domain=arCurrentDomain[arCurrentDomain.length-2] + "." + arCurrentDomain[arCurrentDomain.length-1];
+   }
+else
+   {
+   domain="";
+   }
+
+
+  var curCookie = name + "=" + encodeValue_sw(value) +
+      ((expires) ? "; expires=" + expires.toGMTString() : "") +
+      ((path) ? "; path=" + path : "") +
+      ((domain) ? "; domain=" + domain : "") +
+      ((secure) ? "; secure" : "");
+  document.cookie = curCookie;
+}
+
+
+function getCookie_sw_Old(name) {
+  var dc = document.cookie;
+  var prefix = name + "=";
+  var begin = dc.indexOf("; " + prefix);
+  if (begin == -1) {
+    begin = dc.indexOf(prefix);
+    if (begin != 0) return null;
+  } else
+    begin += 2;
+  var end = document.cookie.indexOf(";", begin);
+  if (end == -1)
+    end = dc.length;
+  return unescape(dc.substring(begin + prefix.length, end));
+}
+
+
+
+function getCookie_sw(name) {
+  var dc = document.cookie;
+  var prefix = name + "=";
+  var begin = dc.indexOf("; " + prefix);
+  if (begin == -1) {
+    begin = dc.indexOf(prefix);
+    if (begin != 0) return null;
+  } else
+    begin += 2;
+  var end = document.cookie.indexOf(";", begin);
+  if (end == -1)
+    end = dc.length;
+  return decodeValue_sw(dc.substring(begin + prefix.length, end));
+}
+
+
+function fixDate_sw(date) {
+  var base = new Date(0);
+  var skew = base.getTime();
+  if (skew > 0)
+    date.setTime(date.getTime() - skew);
+}
+
+
+function query_sw(ji) {
+
+hu = searchString_sw;
+gy = hu.split("&");
+for (i=0;i<gy.length;i++) {
+ft = gy[i].split("=");
+if (ft[0] == ji) {
+return ft[1];
+}
+}
+return "";
+}
+
+
+function randomRange_sw () {
+        return Math.round(Math.random() * (popUpScale_sw-1)) + 1
+}
+
+function getiType(str) {
+
+var arrayStr=str.split("_");
+   if (arrayStr.length>1) {
+     return arrayStr[1];
+   }
+   else
+   {
+     return "0";
+   }
+}
+
+
+
+function dounload_24_CG_05_sw() {
+
+//!!modified for exit early
+//!!-----------------------
+
+if (isExit_sw==2) {
+
+iContent_sw=iContent_sw.replace(/iClose_sw\(1\)/g,"iClose_sw\(2\)");
+
+winType=2;
+
+}
+//!!-----------------------
+
+
+if (objJsonCookie_sw[cn][pn].p == 1) {return false;}
+
+ if (noGo_sw==0) {
+   if (AdViewFlag_sw==1) {
+     if (randomRange_sw() <= popUpOdds_sw) {
+       if (!surveyAsked_sw) {
+
+
+
+         if (deviceType_sw==2) {
+           var popUpwindowFormat = "toolbar=no,directories=no,location=no,status=yes,menubar=no,resizable=yes,scrollbars=no,height=200,width=270,screenY=300,left=300,top=100";
+         }
+		 else
+		 {
+           var popUpwindowFormat = "toolbar=no,directories=no,location=no,status=yes,menubar=no,resizable=yes,scrollbars=no,height=512,width=438,screenY=300,left=300,top=100";
+		 }
+		 
+		   if (isPIM_sw==1) {
+ 		     webmd.p.pim.increment();
+           }
+
+
+         var popwin = window.open("", "popwin", popUpwindowFormat);
+           iContent_sw=iContent_sw + '<' + 'script type=text/javascript src="https://www.surveywriter.net/in/survey/survey140/iCloseFrame.js"></' + 'script>';
+	         var popwinText="<html><body style='margin:0px;'>" + iContent_sw + "</body></html>"
+               popwin.document.write(popwinText);
+		   	     //Write JSON Cookie back out
+		           	objJsonCookie_sw[cn][pn].p = 1;
+                      setCookie_sw('jsonCookie_sw', JSON.stringify(objJsonCookie_sw), 180);
+       }
+     }
+   }
+ }
+
+}
+
+function triggerSW(theSeg) {
+ 
+if (typeof(theSeg) != 'undefined') {
+        segValue_sw = theSeg;
+} else {
+        segValue_sw = -1;
+}
+
+ var randomN_sw=randomRange_sw();
+ if (randomN_sw > popUpOdds_sw) {noGo_sw=1;}
+ if (surveyAsked_sw==1) {noGo_sw=1;}
+
+ if (noGo_sw==1) {return false;}
+
+ if (popupDelayR_sw > 0) {
+	setTimeout("triggerSW(" + segValue_sw + ")",parseFloat(popupDelayR_sw) * 1000);
+       popupDelayR_sw=0;
+	    popUpOdds_sw=100;
+	     return;
+ }
+
+showPopup_sw(iContent_sw);
+
+if (window.top.document.getElementById('iPopFrame_sw') == null) {return false;}
+
+      window.top.document.getElementById('iPopFrame_sw').style.visibility="visible";
+		 objJsonCookie_sw[cn][pn].p = 1;
+           setCookie_sw('jsonCookie_sw', JSON.stringify(objJsonCookie_sw), 180);
+		     if (isPIM_sw==1) {
+ 		       webmd.p.pim.increment();
+             }
+
+}
+
+function getDate_sw(expireDays) {
+  var atDate=new Date();
+    atDate.setDate(atDate.getDate()+expireDays)
+	  var vDate=atDate.valueOf();
+	     vDate=Math.round(vDate/1000/60/60/24)
+        return vDate;
+}
+
+//Destroy cookie values for this project if past expire date
+function destroyCookie() {
+  var atDate_sw=new Date();
+    var vDate_sw=atDate_sw.valueOf();
+	  vDate_sw=Math.round(vDate_sw/1000/60/60/24)
+        var expireDate_sw=objJsonCookie_sw[cn][pn].x;
+          if (vDate_sw > expireDate_sw) {
+	   	     noGo_sw=1;
+		      delete objJsonCookie_sw[cn][pn];
+		        setCookie_sw('jsonCookie_sw', JSON.stringify(objJsonCookie_sw), 180);
+
+        }
+}
+
+function encodeValue_sw(value) {
+
+	return encodeURIComponent(value).replace(
+
+		// { {
+		// } }
+		// : :
+		// [ [
+		// ] ]
+		// " "
+		// , ,
+
+			/%7B|%7D|%3A|%5B|%5D|%22|%2C/g,
+
+		// Replacement function for any match of the regular expression
+		function(s){ return decodeURIComponent(s) }
+	);
+
+}
+
+
+function decodeValue_sw(value) {
+	return decodeURIComponent(value);
+}
+
+
+function getAdViewsTotal_sw(obj) {
+  var adViewsTotal_sw=0;
+  var itypeNumber_sw="";
+  var cnt=-1;
+  iExposed_sw = [];
+  
+ for (var name in obj) {
+   if (name.substr(0,2)=='at') {
+    cnt=cnt+1
+	  adViewsTotal_sw=adViewsTotal_sw + obj[name];
+	    itypeNumber_sw=name.replace("at","")
+	       nExposures_sw[itypeNumber_sw]=obj[name];
+	       iExposed_sw[cnt]=itypeNumber_sw;
+	}
+ }
+
+iExposed_sw=iExposed_sw.join(",");
+
+return adViewsTotal_sw;
+}
+
+function getDevice_sw(a){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4))) {return 2} else {return 1}}
+
+
+function iClose_sw(winType){
+window.top.document.getElementsByTagName("body")[0].style.backgroundColor="initial";
+
+  if (winType==1) {
+    var ele = window.top.document.getElementsByName("iPopFrame_sw");
+	  var elementsCount = ele.length;
+       for(var i=0;i<elementsCount;i++){
+         ele[0].parentNode.removeChild(ele[0]);
+       }
+
+    var ele = window.top.document.getElementsByName("iPopFrame");
+	  var elementsCount = ele.length;
+       for(var i=0;i<elementsCount;i++){
+         ele[0].parentNode.removeChild(ele[0]);
+       }
+   }
+   
+  if (winType==2) {
+  
+    for (var i_sw = 0; i_sw < cnt_iPopFrame_sw; i_sw++) {
+      window.top.document.getElementsByName("iPopFrame_sw")[i_sw].style.visibility="hidden";
+    }
+
+    for (var i_sw = 0; i_sw < cnt_iPopFrame; i_sw++) {
+      window.top.document.getElementsByName("iPopFrame")[i_sw].style.visibility="hidden";
+    }
+
+  
+     window.close();
+   }
+     
+}
