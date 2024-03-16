@@ -1,0 +1,18 @@
+.idaho {
+    display: grid;
+    margin:  auto;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100%;
+}
+
+p {
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+}
+
+img {
+    width: 80%;
+}
